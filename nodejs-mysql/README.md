@@ -91,7 +91,7 @@ In this section, we will automate the creation of an S3 bucket and the managemen
 
 ### **Step 2.1: Define the S3 Bucket in Terraform**
 
-1. Inside your Terraform project folder, create a new file named `s3_bucket.tf`:
+1. Inside your Terraform project folder, create a new file named `s3.tf`:
 
    ```hcl
    resource "aws_s3_bucket" "tf_s3_bucket" {
@@ -105,7 +105,6 @@ In this section, we will automate the creation of an S3 bucket and the managemen
    ```
 
    - **`aws_s3_bucket`**: Creates the S3 bucket with a specified name.
-   - **`aws_s3_bucket_versioning`**: Enables versioning for the bucket to protect against accidental deletions.
 
 2. Save the file.
 
@@ -113,16 +112,15 @@ In this section, we will automate the creation of an S3 bucket and the managemen
 
 ### **Step 2.2: Add Objects to the Bucket**
 
-1. In the same folder, create a new file named `s3_objects.tf`:
-   ```hcl
-   resource "aws_s3_object" "tf_s3_object" {
-   bucket = aws_s3_bucket.tf_s3_bucket.bucket
-   for_each = fileset("../public/images", "**")
-   key    = "images/${each.key}"
-   source = "../public/images/${each.key}"
-   }
-   ```
-   - **`aws_s3_object`**: Uploads a file to the specified path inside the bucket.
+1.  ```hcl
+    resource "aws_s3_object" "tf_s3_object" {
+    bucket = aws_s3_bucket.tf_s3_bucket.bucket
+    for_each = fileset("../public/images", "**")
+    key    = "images/${each.key}"
+    source = "../public/images/${each.key}"
+    }
+    ```
+    - **`aws_s3_object`**: Uploads a file to the specified path inside the bucket.
 
 ---
 
@@ -173,7 +171,8 @@ In this section, we will automate the creation of an S3 bucket and the managemen
 3. Verify:
    - The bucket with the specified name exists.
    - The uploaded file appears in the specified path.
-![S3](./public/images/S3.png)
+     ![S3](./public/images/S3.png)
+
 ---
 
 ### **Step 2.6: Clean Up Resources (Optional)**
@@ -197,7 +196,7 @@ This section will guide you through automating the provisioning and configuratio
 
 ### **Step 3.1: Define the EC2 Instance in Terraform**
 
-1. Create a file named `ec2_instance.tf` in your Terraform project:
+1. Create a file named `ec2.tf` in your Terraform project:
 
    ```hcl
    resource "aws_instance" "tf_ec2_instance" {
@@ -220,8 +219,8 @@ This section will guide you through automating the provisioning and configuratio
 
 
              # Git clone the repository
-             git clone https://github.com/verma-kunal/nodejs-mysql.git /home/ubuntu/nodejs-mysql
-             cd /home/ubuntu/nodejs-mysql
+             git clone https://github.com/shashidas95/terraform-aws-projects.git /home/ubuntu/terraform-aws-projects/nodejs-mysql
+             cd /home/ubuntu/terraform-aws-projects/nodejs-mysql
 
             # Check Ownership and Permissions:
             sudo chown -R ubuntu:ubuntu /home/ubuntu/nodejs-mysql
@@ -245,7 +244,7 @@ This section will guide you through automating the provisioning and configuratio
    }
    ```
 
-2. Update the **AMI ID** (`ami-0abcdef1234567890`) to match your region and instance needs. Use the [AWS AMI Finder](https://aws.amazon.com/amis/) or your AWS Management Console to get the correct AMI.
+2. Update the **AMI ID** (`ami-0e2c8caa4b6378d8c`) to match your region and instance needs. Use the [AWS AMI Finder](https://aws.amazon.com/amis/) or your AWS Management Console to get the correct AMI.
 
 ---
 
@@ -299,15 +298,15 @@ This section will guide you through automating the provisioning and configuratio
 2. Attach the security group to the EC2 instance by updating `ec2_instance.tf`:
 
    ```hcl
-   resource "aws_instance" "my_instance" {
-     ami           = "ami-0abcdef1234567890"
+   resource "aws_instance" "tf_ec2_instance" {
+     ami           = var.ami_id
      instance_type = "t2.micro"
      key_name      = var.key_name
 
      vpc_security_group_ids = [aws_security_group.my_security_group.id]
 
      tags = {
-       Name = "MyTerraformInstance"
+       Name = var.app_name
      }
    }
    ```
@@ -317,6 +316,7 @@ This section will guide you through automating the provisioning and configuratio
 ### **Step 3.3: Add Key Pair for SSH Access**
 
 1. Create a file named `variables.tf` to define a variable for the key pair:
+
    ```hcl
    variable "ami_id" {
    type = string
@@ -330,21 +330,23 @@ This section will guide you through automating the provisioning and configuratio
    variable "app_name" {
    type = string
    default = "Nodejs-Server"
+   }
+   variable "key_name" {
+   type = string
+   default = "terraform-ec2-key"
+   }
+   variable "vpc_id" {
+   type = string
+   default = "vpc-049a9c622eddd0b40"
+   }
    ```
 
-}
-variable "vpc_id" {
-type = string
-default = "vpc-049a9c622eddd0b40"
-}
-
-````
-
 2. Provide the key pair name in `terraform.tfvars`:
-```hcl
-# key_name = "my-key-pair"  # Replace with your AWS key pair name
 
-````
+```hcl
+key_name = "terraform-ec2-key"  # Replace with your AWS key pair name
+
+```
 
 Ensure the private key file for this key pair is available on your local machine for SSH access.
 
@@ -398,7 +400,8 @@ terraform init
 3. Verify:
    - The instance is running.
    - The security group allows SSH and HTTP access.
-![S3](./public/images/ec2_instance.png)
+     ![ec2_instance](./public/images/ec2_instance.png)
+
 ---
 
 ### **Step 3.7: Access the EC2 Instance**
@@ -436,7 +439,7 @@ In this section, we'll automate the creation of an RDS MySQL instance using Terr
 
 ### **Step 4.1: Define RDS MySQL Instance in Terraform**
 
-1. Create a new file named `rds_mysql.tf` to define the RDS MySQL instance:
+1. Create a new file named `rds.tf` to define the RDS MySQL instance:
 
    ```hcl
    resource "aws_db_instance" "tf_rds_instance" {
@@ -446,8 +449,8 @@ In this section, we'll automate the creation of an RDS MySQL instance using Terr
    engine               = "mysql"
    engine_version       = "8.0"
    instance_class       = "db.t3.micro"
-   username             = "admin"
-   password             = "shashi123"
+   username             = var.db_username
+   password             = var.db_password
    parameter_group_name = "default.mysql8.0"
    skip_final_snapshot  = true
    publicly_accessible = true
@@ -483,8 +486,8 @@ variable "db_password" {
 2. Provide values for these variables in a `terraform.tfvars` file:
 
    ````hcl
-   db_username = "mydbuser"  # Set the database username
-   db_password = "mypassword123"  # Set a strong database password
+   db_username = "admin"  # Set the database username
+   db_password = "shashi123"  # Set a strong database password
    ``` -->
    ````
 
@@ -589,6 +592,8 @@ Example command using the MySQL client:
 
 ```bash
 mysql -h <RDS_ENDPOINT> -P 3306 -u mydbuser -p
+
+mysql -h nodejs-rds-mysql.cpm2wm4ealfl.us-east-1.rds.amazonaws.com -u admin -p
 ```
 
 Enter the password when prompted.
@@ -636,7 +641,7 @@ Step 6: Run Terraform to Apply
 
 terraform plan
 terraform apply
-After Terraform finishes provisioning, use the output command to SSH into your EC2 instance.SSH into the instance using the provided public IP. Ensure that the Node.js application is running by accessing the appropriate port (e.g., http://<public_ip>:3000).
+After Terraform finishes provisioning, use the output command to SSH into your EC2 instance.SSH into the instance using the provided public IP. Ensure that the Node.js application is running by accessing the appropriate port (e.g., http://98.84.133.184:3000).
 
 ### go to nodejs-mysql folder
 
@@ -644,41 +649,36 @@ After Terraform finishes provisioning, use the output command to SSH into your E
 npm start
 ```
 
-then go to browser and hit http://<public_ip>:3000
+then go to browser and hit http://98.84.133.184:3000
 
 ![nodejs_app](./public/images/nodejs_app.png)
 This Terraform configuration enables you to automate the creation of EC2 instances, security groups, and the deployment of a Node.js application connected to an RDS MySQL database. By using Terraform, you can maintain reproducibility and consistency in your infrastructure.
 Happy Terraforming!
 
-# NodeJs app with MySQL Database
+**README.md**:
 
-A simple nodejs app connected with mySQL database.
+```markdown
+# AWS Infrastructure Automation with Terraform
 
-## Getting Started
+Automated provisioning of AWS resources using Terraform for S3, EC2, and RDS MySQL.
 
-1. Clone the repo
+## Features
 
-```bash
-git clone https://github.com/verma-kunal/nodejs-mysql.git
-cd nodejs-mysql
+- Fully automated infrastructure setup with reusable modules.
+- Secure configurations using IAM roles and security groups.
+- Scalable and cost-effective design.
+
+## How to Use
+
+1. Clone the repository: `git clone https://github.com/shashidas95/terraform-aws-projects.git`
+2. Initialize Terraform: `terraform init`
+3. Apply the configuration: `terraform apply`
+
+## Tools Used
+
+- Terraform
+- AWS (S3, EC2, RDS)
+- Bash
 ```
 
-2. Create a `.env` file in root directory and add the environment variables:
-
-```bash
-DB_HOST="localhost"
-DB_USER="root" # default mysql user
-DB_PASS=""
-DB_NAME=""
-TABLE_NAME=""
-PORT=3000
-```
-
-> Make sure to create the database and the corresponding table in your mySQL database. 3. Initialize and start the development server:
-
-```bash
-npm install
-npm run dev
-```
-
-![running app](https://github.com/user-attachments/assets/d882c2ec-2539-49eb-990a-3b0669af26b6)
+By hosting your project on GitHub, you make it accessible to anyone with the link, and it becomes a showcase of your expertise and professionalism.
