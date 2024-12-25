@@ -187,7 +187,8 @@ terraform destroy
 
 ---
 
-By completing this part, you have automated the creation of an S3 bucket and the management of objects. Proceed to **Part 3** to work on EC2 instance provisioning.
+By completing this part, you have automated the creation of an S3 bucket and the management of objects.
+Proceed to **Part 3** to work on EC2 instance provisioning.
 **Part 3: Automating EC2 Instance Setup**
 
 This section will guide you through automating the provisioning and configuration of an EC2 instance using Terraform.
@@ -259,39 +260,39 @@ This section will guide you through automating the provisioning and configuratio
    vpc_id      = var.vpc_id //default vpc id
 
     ingress {
-    description = "TLS from VPC"
-    from_port        = 443
-    to_port          = 443
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"] //allow from all ips
+      description = "TLS from VPC"
+      from_port        = 443
+      to_port          = 443
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"] //allow from all ips
    }
     ingress {
-    description = "SSH"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+      description = "SSH"
+      from_port        = 22
+      to_port          = 22
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
    }
     ingress {
-    description = "TCP"
-    from_port        = 3000 //for nodejs
-    to_port          = 3000
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+      description = "TCP"
+      from_port        = 3000 //for nodejs
+      to_port          = 3000
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"]
    }
     ingress {
-    description      = "MySQL"
-    from_port        = 3306
-    to_port          = 3306
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"] // allow from all IPs
+      description      = "MySQL"
+      from_port        = 3306
+      to_port          = 3306
+      protocol         = "tcp"
+      cidr_blocks      = ["0.0.0.0/0"] // allow from all IPs
    }
     egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-   }
+      from_port        = 0
+      to_port          = 0
+      protocol         = "-1"
+      cidr_blocks      = ["0.0.0.0/0"]
+    }
    }
    ```
 
@@ -319,25 +320,25 @@ This section will guide you through automating the provisioning and configuratio
 
    ```hcl
    variable "ami_id" {
-   type = string
-   default = "ami-0e2c8caa4b6378d8c"
-   description = "ami image"
+      type = string
+      default = "ami-0e2c8caa4b6378d8c"
+      description = "ami image"
    }
    variable "instance_type" {
-   type = string
-   default = "t2.micro"
+      type = string
+      default = "t2.micro"
    }
    variable "app_name" {
-   type = string
-   default = "Nodejs-Server"
+      type = string
+      default = "Nodejs-Server"
    }
-   variable "key_name" {
-   type = string
-   default = "terraform-ec2-key"
+      variable "key_name" {
+      type = string
+      default = "terraform-ec2-key"
    }
    variable "vpc_id" {
-   type = string
-   default = "vpc-049a9c622eddd0b40"
+      type = string
+      default = "vpc-049a9c622eddd0b40"
    }
    ```
 
@@ -359,14 +360,13 @@ Ensure the private key file for this key pair is available on your local machine
    output "instance_public_ip" {
      value = aws_instance.tf_ec2_instance.public_ip
    }
+   output "instance_id" {
+   value = aws_instance.tf_ec2_instance.id
+   }
+   output "ssh_to_ec2_instance" {
+   value = "ssh -i ~/.ssh/terraform-ec2-key.pem ubuntu@${aws_instance.tf_ec2_instance.public_ip}"
+   }
    ```
-
-output "instance_id" {
-value = aws_instance.tf_ec2_instance.id
-}
-output "ssh_to_ec2_instance" {
-value = "ssh -i ~/.ssh/terraform-ec2-key.pem ubuntu@${aws_instance.tf_ec2_instance.public_ip}"
-}
 
 ````
 
@@ -460,15 +460,16 @@ In this section, we'll automate the creation of an RDS MySQL instance using Terr
 
 ````
 2. add locals and outputs
+```bash
 locals {
 rds_endpoint = element(split(":", aws_db_instance.tf_rds_instance.endpoint),0)
 }
-
+```
 ---
 
 ### **Step 4.2: Define MySQL Username and Password as Variables**
 
-<!-- 1. Create a `variables.tf` file to define the MySQL credentials as variables:
+1. Create a `variables.tf` file to define the MySQL credentials as variables:
 
 ```hcl
 variable "db_username" {
@@ -485,10 +486,11 @@ variable "db_password" {
 
 2. Provide values for these variables in a `terraform.tfvars` file:
 
-   ````hcl
-   db_username = "admin"  # Set the database username
-   db_password = "shashi123"  # Set a strong database password
-   ``` -->
+   ````bash
+      db_username = "admin"  # Set the database username
+      db_password = "shashi123"  # Set a strong database password
+   ```
+
    ````
 
 ---
@@ -504,23 +506,24 @@ If you have not defined a security group for RDS, update `security_group.tf` to 
    name        = "allow_mysql"
    description = "Allow mysql traffic"
    vpc_id      = "vpc-049a9c622eddd0b40" //default vpc id
-   ```
 
-ingress {
-description = "Allow MySQL from EC2"
-from_port = 3306
-to_port = 3306
-protocol = "tcp"
-cidr_blocks = ["0.0.0.0/0"] //any ip
-security_groups = [aws_security_group.tf_ec2_sg.id]// EC2 instance security group ID
-}
-egress {
-from_port = 0
-to_port = 0
-protocol = "-1"
-cidr_blocks = ["0.0.0.0/0"]
-}
-}
+   ingress {
+      description = "Allow MySQL from EC2"
+      from_port = 3306
+      to_port = 3306
+      protocol = "tcp"
+      cidr_blocks = ["0.0.0.0/0"] //any ip
+      security_groups = [aws_security_group.tf_ec2_sg.id]// EC2 instance security group ID
+   }
+
+   egress {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+   }
+   ```
 
 ````
 
@@ -532,16 +535,16 @@ Adjust the **CIDR blocks** to restrict access as per your security requirements.
 
 1. In the `outputs.tf` file, add outputs to capture important details about your RDS instance:
 
-```hcl
-output "rds_endpoint" {
-value =  local.rds_endpoint
-}
-output "rds_username" {
-value = aws_db_instance.tf_rds_instance.username
-}
-output "db_name" {
-value = aws_db_instance.tf_rds_instance.db_name
-}
+```bash
+   output "rds_endpoint" {
+   value =  local.rds_endpoint
+   }
+   output "rds_username" {
+   value = aws_db_instance.tf_rds_instance.username
+   }
+   output "db_name" {
+   value = aws_db_instance.tf_rds_instance.db_name
+   }
 ````
 
 These outputs will show the endpoint and instance ID after creation, which you can use to connect to the RDS instance.
@@ -614,15 +617,25 @@ Confirm with `yes` to delete the RDS instance and other resources created by Ter
 
 By completing this part, you've successfully automated the creation of an RDS MySQL instance using Terraform, and you can easily scale, manage, and maintain your database instance in AWS. You can now proceed to configure additional resources or enhance your infrastructure as needed.
 
-#####notes for mysql in rds
+##### Notes for mysql in rds
 
 Check the database in rds from the ec2 instance
 Firstly ssh to the ec2 instance using the command which is given by the output after the ec2 creation:
+
+```bash
 ssh -i ~/.ssh/terraform-ec2-key.pem ubuntu@98.84.133.184
+```
+
 Then apply the command:
+
+```bash
 mysql -h nodejs-rds-mysql.cpm2wm4ealfl.us-east-1.rds.amazonaws.com -u admin -p
+```
+
 It will prompt for giving password .
 Create database and input data
+
+```bash
 CREATE DATABASE shashi_demo;
 
 use shashi_demo;
@@ -636,11 +649,15 @@ email VARCHAR(100) NOT NULL
 INSERT INTO users (name, email) VALUES ('John Doe', 'john@example.com');
 INSERT INTO users (name, email) VALUES ('Jane Smith', 'jane@example.com');
 INSERT INTO users (name, email) VALUES ('shashikanta ', 'kanta@gmail.com');
+```
 
 Step 6: Run Terraform to Apply
 
+```bash
 terraform plan
 terraform apply
+```
+
 After Terraform finishes provisioning, use the output command to SSH into your EC2 instance.SSH into the instance using the provided public IP. Ensure that the Node.js application is running by accessing the appropriate port (e.g., http://98.84.133.184:3000).
 
 ### go to nodejs-mysql folder
