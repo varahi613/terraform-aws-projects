@@ -81,6 +81,13 @@ resource "aws_security_group" "tf_ec2_sg" {
     cidr_blocks      = ["0.0.0.0/0"]
   }
 }
-output "ec2_public_ip" {
+output "instance_public_ip" {
+     value = aws_instance.tf_ec2_instance.public_ip
+   }
+
+output "instance_id" {
+     value = aws_instance.tf_ec2_instance.id
+   }
+output "ssh_to_ec2_instance" {
   value = "ssh -i ~/.ssh/terraform-ec2-key.pem ubuntu@${aws_instance.tf_ec2_instance.public_ip}"
 }
