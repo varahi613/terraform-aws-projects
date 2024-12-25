@@ -26,8 +26,8 @@ resource "aws_instance" "tf_ec2_instance" {
 
              # Create .env file with placeholder environment variables
             echo "DB_HOST=${local.rds_endpoint}" | sudo tee .env
-            echo "DB_USER=${aws_db_instance.tf_rds_instance.username}" | sudo tee -a .env
-            echo "DB_PASS=${aws_db_instance.tf_rds_instance.password}" | sudo tee -a .env
+            echo "DB_USER=${aws_db_instance.tf_rds_instance.db_username}" | sudo tee -a .env
+            echo "DB_PASS=${aws_db_instance.tf_rds_instance.db_password}" | sudo tee -a .env
             echo "DB_NAME=${aws_db_instance.tf_rds_instance.db_name}" | sudo tee -a .env
             echo "TABLE_NAME=users" | sudo tee -a .env
             echo "PORT=3000" | sudo tee -a .env

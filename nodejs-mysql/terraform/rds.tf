@@ -50,9 +50,9 @@ locals {
 output "rds_endpoint" {
   value =  local.rds_endpoint
 }
-output "rds_username" {
+output "db_username" {
   value = aws_db_instance.tf_rds_instance.username
 }
-output "db_name" {
-  value = aws_db_instance.tf_rds_instance.db_name
+output "db_password" {
+  value = aws_db_instance.tf_rds_instance.password
 }
