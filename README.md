@@ -1,5 +1,5 @@
 Automating AWS Infrastructure with Terraform: A Step-by-Step Guide
-![Automating AWS Infrastructure with Terraform](../public/images/terraform-aws.png)
+![Automating AWS Infrastructure with Terraform](./nodejs-mysql/public/images/terraform-aws.png)
 
 **Part 1: Setting Up the Environment**
 
@@ -171,7 +171,7 @@ In this section, we will automate the creation of an S3 bucket and the managemen
 3. Verify:
    - The bucket with the specified name exists.
    - The uploaded file appears in the specified path.
-     ![S3](./public/images/S3.png)
+     ![S3](./nodejs-mysql/public/images/S3.png)
 
 ---
 
@@ -400,7 +400,7 @@ terraform init
 3. Verify:
    - The instance is running.
    - The security group allows SSH and HTTP access.
-     ![ec2_instance](./public/images/ec2_instance.png)
+     ![ec2_instance](./nodejs-mysql/public/images/ec2_instance.png)
 
 ---
 
