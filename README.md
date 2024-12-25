@@ -1,5 +1,5 @@
 Automating AWS Infrastructure with Terraform: A Step-by-Step Guide
-![Automating AWS Infrastructure with Terraform](./public/images/terraform-aws.png)
+![Automating AWS Infrastructure with Terraform](../public/images/terraform-aws.png)
 
 **Part 1: Setting Up the Environment**
 
