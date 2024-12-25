@@ -1,4 +1,39 @@
-Automating AWS Infrastructure with Terraform: A Step-by-Step Guide
+# AWS Infrastructure Automation with Terraform
+
+This Terraform configuration enables you to automate the creation of EC2 instances, security groups, and the deployment of a Node.js application connected to an RDS MySQL database. By using Terraform, you can maintain reproducibility and consistency in your infrastructure.
+Happy Terraforming!
+
+**README.md**:
+
+```markdown
+# AWS Infrastructure Automation with Terraform
+
+Automated provisioning of AWS resources using Terraform for S3, EC2, and RDS MySQL.
+
+## Features
+
+- Fully automated infrastructure setup with reusable modules.
+- Secure configurations using IAM roles and security groups.
+- Scalable and cost-effective design.
+
+## How to Use
+
+1. Clone the repository: `git clone https://github.com/shashidas95/terraform-aws-projects.git`
+2. Initialize Terraform: `terraform init`
+3. Apply the configuration: `terraform apply`
+
+## Tools Used
+
+- Terraform
+- AWS (S3, EC2, RDS)
+- Bash
+```
+
+By hosting your project on GitHub, you make it accessible to anyone with the link, and it becomes a showcase of your expertise and professionalism.
+
+
+
+# Automating AWS Infrastructure with Terraform: A Step-by-Step Guide
 ![Automating AWS Infrastructure with Terraform](./nodejs-mysql/public/images/terraform-aws.png)
 
 **Part 1: Setting Up the Environment**
@@ -668,34 +703,5 @@ npm start
 
 then go to browser and hit http://98.84.133.184:3000
 
-![nodejs_app](./public/images/nodejs_app.png)
-This Terraform configuration enables you to automate the creation of EC2 instances, security groups, and the deployment of a Node.js application connected to an RDS MySQL database. By using Terraform, you can maintain reproducibility and consistency in your infrastructure.
-Happy Terraforming!
+![nodejs_app](./nodejs-mysql/public/images/nodejs_app.png)
 
-**README.md**:
-
-```markdown
-# AWS Infrastructure Automation with Terraform
-
-Automated provisioning of AWS resources using Terraform for S3, EC2, and RDS MySQL.
-
-## Features
-
-- Fully automated infrastructure setup with reusable modules.
-- Secure configurations using IAM roles and security groups.
-- Scalable and cost-effective design.
-
-## How to Use
-
-1. Clone the repository: `git clone https://github.com/shashidas95/terraform-aws-projects.git`
-2. Initialize Terraform: `terraform init`
-3. Apply the configuration: `terraform apply`
-
-## Tools Used
-
-- Terraform
-- AWS (S3, EC2, RDS)
-- Bash
-```
-
-By hosting your project on GitHub, you make it accessible to anyone with the link, and it becomes a showcase of your expertise and professionalism.
