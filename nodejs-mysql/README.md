@@ -1,6 +1,7 @@
 Automating AWS Infrastructure with Terraform: A Step-by-Step Guide
-![Logo](./nodejs-mysql/public/images/terraform-aws.png 'Company Logo')
-/Users/shashikantadas/terraform-aws-projects/nodejs-mysql/public/images/terraform-aws.png
+![Automating AWS Infrastructure with Terraform](./public/images/terraform-aws.png)
+
+/terraform-aws-projects/nodejs-mysql/public/images/terraform-aws.png
 In this tutorial, we will automate the creation and management of AWS resources using Terraform, a powerful infrastructure as code (IaC) tool. We will walk through setting up an AWS S3 bucket, uploading objects to it, provisioning an EC2 instance, and even configuring a MySQL RDS database—all with Terraform.
 Prerequisites:
 AWS account with IAM user credentials (Access Key ID and Secret Access Key).
