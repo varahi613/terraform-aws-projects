@@ -1,0 +1,6 @@
+DB_HOST=127.0.0.1
+DB_USER="root" # default mysql user
+DB_PASS="shashi"
+DB_NAME="shashi_demo"
+TABLE_NAME="users"
+PORT=3000
