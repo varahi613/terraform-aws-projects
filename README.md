@@ -31,9 +31,8 @@ Automated provisioning of AWS resources using Terraform for S3, EC2, and RDS MyS
 
 By hosting your project on GitHub, you make it accessible to anyone with the link, and it becomes a showcase of your expertise and professionalism.
 
-
-
 # Automating AWS Infrastructure with Terraform: A Step-by-Step Guide
+
 ![Automating AWS Infrastructure with Terraform](./nodejs-mysql/public/images/terraform-aws.png)
 
 **Part 1: Setting Up the Environment**
@@ -53,6 +52,49 @@ The AWS Toolkit is an extension for Visual Studio Code that simplifies managing 
 Once installed, you can use the AWS Explorer in VS Code to manage AWS services easily.
 
 ---
+To simplify the process of using a key pair for EC2 instances, follow these steps:
+
+---
+
+### **Step 1: Create a Key Pair in AWS UI**
+1. Log in to your AWS Management Console.
+2. Navigate to **EC2 Dashboard** > **Key Pairs** (under **Network & Security**).
+3. Click on **Create Key Pair**.
+4. Provide a name for your key pair, e.g., `terraform-ec2-key`.
+5. Choose **Key Pair Type** as `RSA` and **Private Key File Format** as `.pem`.
+6. Click **Create Key Pair**.  
+   The key pair will be downloaded automatically to your `Downloads` folder as `terraform-ec2-key.pem`.
+
+---
+
+### **Step 2: Move the Key to Your Home Directory**
+Use the `mv` command in the terminal to move the key file to your home directory:
+
+1. Open your terminal.
+2. Run the following command:
+   ```bash
+   mv ~/Downloads/terraform-ec2-key.pem ~/
+   ```
+
+---
+
+### **Step 3: Set Appropriate Permissions**
+Ensure that the key file has the correct permissions, as required by SSH:
+
+```bash
+chmod 400 ~/terraform-ec2-key.pem
+```
+
+---
+
+### **Verification**
+You can verify the key is moved and secured by listing the files in your home directory:
+
+```bash
+ls -l ~/terraform-ec2-key.pem
+```
+
+The output should show `-rw-------` permissions.
 
 ### **Step 1.2: Configure IAM User Credentials**
 
@@ -249,17 +291,13 @@ This section will guide you through automating the provisioning and configuratio
              sudo apt update -y
              sudo apt install -y git nodejs npm
 
-             # Ensure the /home/ubuntu directory exists
-             # sudo mkdir -p /home/ubuntu
-             # sudo chown ubuntu:ubuntu /home/ubuntu
-
-
              # Git clone the repository
-             git clone https://github.com/shashidas95/terraform-aws-projects.git /home/ubuntu/terraform-aws-projects/nodejs-mysql
+            git clone https://github.com/shashidas95/terraform-aws-projects.git /home/ubuntu/terraform-aws-projects
              cd /home/ubuntu/terraform-aws-projects/nodejs-mysql
 
             # Check Ownership and Permissions:
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/nodejs-mysql
+             sudo chown -R ubuntu:ubuntu /home/ubuntu/terraform-aws-projects/nodejs-mysql
+
 
              # Create .env file with placeholder environment variables
             echo "DB_HOST=${local.rds_endpoint}" | sudo tee .env
@@ -704,4 +742,3 @@ npm start
 then go to browser and hit http://98.84.133.184:3000
 
 ![nodejs_app](./nodejs-mysql/public/images/nodejs_app.png)
-

@@ -53,6 +53,3 @@ output "rds_endpoint" {
 output "db_username" {
   value = aws_db_instance.tf_rds_instance.username
 }
-output "db_password" {
-  value = aws_db_instance.tf_rds_instance.password
-}

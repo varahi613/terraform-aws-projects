@@ -11,23 +11,18 @@ resource "aws_instance" "tf_ec2_instance" {
              # Update and install dependencies
              sudo apt update -y
              sudo apt install -y git nodejs npm
-
-             # Ensure the /home/ubuntu directory exists
-             # sudo mkdir -p /home/ubuntu
-             # sudo chown ubuntu:ubuntu /home/ubuntu
             
-
              # Git clone the repository
-             git clone https://github.com/verma-kunal/nodejs-mysql.git /home/ubuntu/nodejs-mysql
-             cd /home/ubuntu/nodejs-mysql
+             git clone https://github.com/shashidas95/terraform-aws-projects.git /home/ubuntu/terraform-aws-projects
+             cd /home/ubuntu/terraform-aws-projects/nodejs-mysql
 
             # Check Ownership and Permissions:
-            sudo chown -R ubuntu:ubuntu /home/ubuntu/nodejs-mysql
+            sudo chown -R ubuntu:ubuntu /home/ubuntu/terraform-aws-projects/nodejs-mysql
 
              # Create .env file with placeholder environment variables
             echo "DB_HOST=${local.rds_endpoint}" | sudo tee .env
-            echo "DB_USER=${aws_db_instance.tf_rds_instance.db_username}" | sudo tee -a .env
-            echo "DB_PASS=${aws_db_instance.tf_rds_instance.db_password}" | sudo tee -a .env
+            echo "DB_USER=${aws_db_instance.tf_rds_instance.username}" | sudo tee -a .env
+            echo "DB_PASS=${aws_db_instance.tf_rds_instance.password}" | sudo tee -a .env
             echo "DB_NAME=${aws_db_instance.tf_rds_instance.db_name}" | sudo tee -a .env
             echo "TABLE_NAME=users" | sudo tee -a .env
             echo "PORT=3000" | sudo tee -a .env
