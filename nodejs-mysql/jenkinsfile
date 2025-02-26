@@ -12,15 +12,15 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    # Git clone the repository
-                    if [ ! -d "/home/ubuntu/terraform-aws-projects" ]; then
-                        git clone https://github.com/shashidas95/terraform-aws-projects.git /home/ubuntu/terraform-aws-projects
+                    # Git clone the repository to a valid directory for Jenkins on macOS
+                    if [ ! -d "/Users/jenkins/terraform-aws-projects" ]; then
+                        git clone https://github.com/shashidas95/terraform-aws-projects.git /Users/jenkins/terraform-aws-projects
                     else
-                        cd /home/ubuntu/terraform-aws-projects && git pull origin main
+                        cd /Users/jenkins/terraform-aws-projects && git pull origin main
                     fi
                     
-                    # Change ownership and permissions
-                    sudo chown -R ubuntu:ubuntu /home/ubuntu/terraform-aws-projects/nodejs-mysql
+                    # Change ownership and permissions (if applicable, for Jenkins user)
+                    sudo chown -R jenkins:jenkins /Users/jenkins/terraform-aws-projects
                     '''
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                dir('/home/ubuntu/terraform-aws-projects/nodejs-mysql') {
+                dir('/Users/jenkins/terraform-aws-projects/nodejs-mysql/terraform') {
                     sh 'terraform init'
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                dir('/home/ubuntu/terraform-aws-projects/nodejs-mysql') {
+                dir('/Users/jenkins/terraform-aws-projects/nodejs-mysql/terraform') {
                     sh 'terraform plan -out=tfplan'
                 }
             }
@@ -44,7 +44,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                dir('/home/ubuntu/terraform-aws-projects/nodejs-mysql') {
+                dir('/Users/jenkins/terraform-aws-projects/nodejs-mysql/terraform') {
                     sh 'terraform apply -auto-approve tfplan'
                 }
             }
