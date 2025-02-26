@@ -52,11 +52,13 @@ The AWS Toolkit is an extension for Visual Studio Code that simplifies managing 
 Once installed, you can use the AWS Explorer in VS Code to manage AWS services easily.
 
 ---
+
 To simplify the process of using a key pair for EC2 instances, follow these steps:
 
 ---
 
 ### **Step 1: Create a Key Pair in AWS UI**
+
 1. Log in to your AWS Management Console.
 2. Navigate to **EC2 Dashboard** > **Key Pairs** (under **Network & Security**).
 3. Click on **Create Key Pair**.
@@ -68,6 +70,7 @@ To simplify the process of using a key pair for EC2 instances, follow these step
 ---
 
 ### **Step 2: Move the Key to Your Home Directory**
+
 Use the `mv` command in the terminal to move the key file to your home directory:
 
 1. Open your terminal.
@@ -79,6 +82,7 @@ Use the `mv` command in the terminal to move the key file to your home directory
 ---
 
 ### **Step 3: Set Appropriate Permissions**
+
 Ensure that the key file has the correct permissions, as required by SSH:
 
 ```bash
@@ -88,6 +92,7 @@ chmod 400 ~/terraform-ec2-key.pem
 ---
 
 ### **Verification**
+
 You can verify the key is moved and secured by listing the files in your home directory:
 
 ```bash
@@ -487,6 +492,7 @@ ssh -i ~/.ssh/terraform-ec2-key.pem ubuntu@${aws_instance.tf_ec2_instance.public
 ```
 
 Replace `/path/to/private-key.pem` with the path to your private key and `<INSTANCE_PUBLIC_IP>` with the public IP address of the instance.
+.
 
 ---
 
