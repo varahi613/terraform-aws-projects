@@ -27,7 +27,7 @@ resource "aws_db_instance" "tf_rds_instance" {
 resource "aws_security_group" "tf_rds_sg" {
   name        = "allow_mysql"
   description = "Allow mysql traffic"
-  vpc_id      = "vpc-049a9c622eddd0b40" //default vpc id
+  vpc_id      = "vpc-00a0e3c64adf1f8f6"//default vpc id
 
   ingress {
   description      = "Allow MySQL from EC2"
