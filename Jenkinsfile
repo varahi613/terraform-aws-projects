@@ -11,17 +11,8 @@ pipeline {
         stage('Checkout Repository') {
             steps {
                 script {
-                    sh '''
-                    if [ ! -d "terraform-aws-projects" ]; then
-                        git clone https://github.com/shashidas95/terraform-aws-projects.git .
-                    else
-                        git pull origin main
-                    fi
-
-                    # Change ownership and permissions if required
-                    sudo chown -R $(whoami):$(id -gn) .
-                    chmod -R 755 .
-                    '''
+                    // No need to clone again, Jenkins already did it
+                    sh 'ls -lah'
                 }
             }
         }
@@ -36,7 +27,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                dir('terraform') {  // Use relative path to 'terraform' directory
+                dir('terraform') {
                     sh 'terraform plan -out=tfplan'
                 }
             }
@@ -44,7 +35,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                dir('terraform') {  // Use relative path to 'terraform' directory
+                dir('terraform') {
                     sh 'terraform apply -auto-approve tfplan'
                 }
             }
