@@ -1,7 +1,7 @@
 resource "aws_instance" "tf_ec2_instance" {
   ami           = var.ami_id
   instance_type = var.instance_type
-  key_name      = "terraform-ec2-key"
+  key_name      = "terraform-ec2"
   associate_public_ip_address = true
   vpc_security_group_ids = [aws_security_group.tf_ec2_sg.id]
   depends_on    = [aws_s3_object.tf_s3_object]
@@ -54,8 +54,7 @@ resource "aws_instance" "tf_ec2_instance" {
 resource "aws_security_group" "tf_ec2_sg" {
   name        = "Nodejs-server-sg"
   description = "Allow Http and ssh"
-  vpc_id      = var.vpc_id //default vpc id
-
+  vpc_id      = "vpc-00a0e3c64adf1f8f6" //default vpc id 
     ingress {
     description = "TLS from VPC"
     from_port        = 443
