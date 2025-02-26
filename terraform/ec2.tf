@@ -4,7 +4,11 @@ resource "aws_instance" "tf_ec2_instance" {
   key_name      = "terraform-ec2"
   associate_public_ip_address = true
   vpc_security_group_ids = [aws_security_group.tf_ec2_sg.id]
-  depends_on    = [aws_s3_object.tf_s3_object]
+  depends_on = [
+  aws_db_instance.tf_rds_instance,
+  aws_s3_object.tf_s3_object
+]
+
 
   user_data = <<-EOF
             #!/bin/bash
@@ -41,6 +45,9 @@ resource "aws_instance" "tf_ec2_instance" {
 
             # Install dependencies
             npm install
+
+            # Start the application
+            nohup npm start &
             '  
   EOF
 
@@ -97,6 +104,10 @@ output "instance_public_ip" {
 output "instance_id" {
      value = aws_instance.tf_ec2_instance.id
    }
+
+output "Permissions_for_ssh_connection" {
+  value = "Ensure the SSH private key has correct permissions by running: chmod 400 ~/.ssh/terraform-ec2.pem"
+}
 output "ssh_to_ec2_instance" {
   value = "ssh -i ~/.ssh/terraform-ec2.pem ubuntu@${aws_instance.tf_ec2_instance.public_ip}"
 }
