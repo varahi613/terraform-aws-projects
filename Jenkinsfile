@@ -12,15 +12,15 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    # Git clone the repository to a valid directory for Jenkins on macOS
-                    if [ ! -d "/Users/jenkins/terraform-aws-projects" ]; then
-                        git clone https://github.com/shashidas95/terraform-aws-projects.git /Users/jenkins/terraform-aws-projects
+                    if [ ! -d "terraform-aws-projects" ]; then
+                        git clone https://github.com/shashidas95/terraform-aws-projects.git .
                     else
-                        cd /Users/jenkins/terraform-aws-projects && git pull origin main
+                        git pull origin main
                     fi
-                    
-                    # Change ownership and permissions (if applicable, for Jenkins user)
-                    sudo chown -R jenkins:jenkins /Users/jenkins/terraform-aws-projects
+
+                    # Change ownership and permissions if required
+                    sudo chown -R $(whoami):$(id -gn) .
+                    chmod -R 755 .
                     '''
                 }
             }
@@ -28,7 +28,7 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                dir('/Users/jenkins/terraform-aws-projects/nodejs-mysql/terraform') {
+                dir('terraform') {  // Use relative path to 'terraform' directory
                     sh 'terraform init'
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
 
         stage('Terraform Plan') {
             steps {
-                dir('/Users/jenkins/terraform-aws-projects/nodejs-mysql/terraform') {
+                dir('terraform') {  // Use relative path to 'terraform' directory
                     sh 'terraform plan -out=tfplan'
                 }
             }
@@ -44,7 +44,7 @@ pipeline {
 
         stage('Terraform Apply') {
             steps {
-                dir('/Users/jenkins/terraform-aws-projects/nodejs-mysql/terraform') {
+                dir('terraform') {  // Use relative path to 'terraform' directory
                     sh 'terraform apply -auto-approve tfplan'
                 }
             }
