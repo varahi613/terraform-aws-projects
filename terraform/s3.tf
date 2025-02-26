@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "tf_s3_bucket" {
-  bucket = "my-tf-nodejs-bucket"
+  bucket = "tf-nodejs-bucket02"
   tags = {
     Name        = "sas_nodejs_bucket"
     Environment = "Dev"
