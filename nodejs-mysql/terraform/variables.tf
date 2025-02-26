@@ -1,6 +1,6 @@
 variable "ami_id" {
  type = string
- default = "ami-0e2c8caa4b6378d8c"
+ default = "ami-04b4f1a9cf54c11d0"
  description = "ami image"
 }
 variable "instance_type" {
@@ -14,7 +14,7 @@ variable "app_name" {
 }
 variable "vpc_id" {
   type = string
-  default = "vpc-049a9c622eddd0b40"
+  default = "vpc-00a0e3c64adf1f8f6"
 }
 variable "key_name" {
   type = string
