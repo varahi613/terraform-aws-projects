@@ -1,0 +1,53 @@
+pipeline {
+    agent any
+
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('aws-credentials')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
+        AWS_REGION = 'us-east-1'
+    }
+
+    stages {
+        stage('Checkout Repository') {
+            steps {
+                script {
+                    sh '''
+                    # Git clone the repository
+                    if [ ! -d "/home/ubuntu/terraform-aws-projects" ]; then
+                        git clone https://github.com/shashidas95/terraform-aws-projects.git /home/ubuntu/terraform-aws-projects
+                    else
+                        cd /home/ubuntu/terraform-aws-projects && git pull origin main
+                    fi
+                    
+                    # Change ownership and permissions
+                    sudo chown -R ubuntu:ubuntu /home/ubuntu/terraform-aws-projects/nodejs-mysql
+                    '''
+                }
+            }
+        }
+
+        stage('Terraform Init') {
+            steps {
+                dir('/home/ubuntu/terraform-aws-projects/nodejs-mysql') {
+                    sh 'terraform init'
+                }
+            }
+        }
+
+        stage('Terraform Plan') {
+            steps {
+                dir('/home/ubuntu/terraform-aws-projects/nodejs-mysql') {
+                    sh 'terraform plan -out=tfplan'
+                }
+            }
+        }
+
+        stage('Terraform Apply') {
+            steps {
+                dir('/home/ubuntu/terraform-aws-projects/nodejs-mysql') {
+                    sh 'terraform apply -auto-approve tfplan'
+                }
+            }
+        }
+    }
+}
