@@ -84,5 +84,5 @@ output "instance_id" {
      value = aws_instance.tf_ec2_instance.id
    }
 output "ssh_to_ec2_instance" {
-  value = "ssh -i ~/.ssh/terraform-ec2-key.pem ubuntu@${aws_instance.tf_ec2_instance.public_ip}"
+  value = "ssh -i ~/.ssh/terraform-ec2.pem ubuntu@${aws_instance.tf_ec2_instance.public_ip}"
 }
