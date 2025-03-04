@@ -18,7 +18,7 @@ variable "vpc_id" {
 }
 variable "key_name" {
   type = string
-  default = "terraform-ec2-key"
+  default = "terraform-ec2"
 }
 
 variable "db_username" {
