@@ -3,7 +3,8 @@ resource "aws_instance" "tf_ec2_instance" {
   instance_type = var.instance_type
   key_name      = "terraform-ec2"
   associate_public_ip_address = true
-  vpc_security_group_ids = [aws_security_group.tf_ec2_sg.id]
+ 
+   vpc_security_group_ids = [aws_security_group.tf_sg.id]
   depends_on = [
   aws_db_instance.tf_rds_instance,
   aws_s3_object.tf_s3_object
