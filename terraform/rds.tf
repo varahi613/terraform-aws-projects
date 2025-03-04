@@ -25,7 +25,7 @@ resource "aws_db_instance" "tf_rds_instance" {
   vpc_security_group_ids = [ aws_security_group.tf_rds_sg.id ]
 }
 resource "aws_db_subnet_group" "main" {
-  name       = "main-db-subnet-group"
+  name       = "new-db-subnet-group"
   subnet_ids = [aws_subnet.private1.id, aws_subnet.private2.id]  # Use private subnets
   description = "My database subnet group"
 }
