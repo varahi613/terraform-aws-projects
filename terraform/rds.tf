@@ -9,20 +9,25 @@ rds.tf
 
 */
 
-
 resource "aws_db_instance" "tf_rds_instance" {
   allocated_storage    = 10
   db_name              = "shashi_demo"
-  identifier           = "nodejs-rds-mysql"
+  identifier           = "multi-tier-db"
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t3.micro"
   username             = var.db_username
   password             = var.db_password
+  db_subnet_group_name = aws_db_subnet_group.main.name
   parameter_group_name = "default.mysql8.0"
   skip_final_snapshot  = true
   publicly_accessible = true
   vpc_security_group_ids = [ aws_security_group.tf_rds_sg.id ]
+}
+resource "aws_db_subnet_group" "main" {
+  name       = "main-db-subnet-group"
+  subnet_ids = [aws_subnet.private1.id, aws_subnet.private2.id]  # Use private subnets
+  description = "My database subnet group"
 }
 resource "aws_security_group" "tf_rds_sg" {
   name        = "allow_mysql"
