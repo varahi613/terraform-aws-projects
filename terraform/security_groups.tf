@@ -2,7 +2,7 @@
 resource "aws_security_group" "tf_ec2_sg" {
   name        = "Nodejs-server-sg"
   description = "Allow Http and ssh"
-  vpc_id      = "vpc-00a0e3c64adf1f8f6" //default vpc id 
+  vpc_id      = aws_vpc.main.id //default vpc id 
     ingress {
     description = "TLS from VPC"
     from_port        = 443

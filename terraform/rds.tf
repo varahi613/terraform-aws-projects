@@ -32,7 +32,7 @@ resource "aws_db_subnet_group" "main" {
 resource "aws_security_group" "tf_rds_sg" {
   name        = "allow_mysql"
   description = "Allow mysql traffic"
-  vpc_id      = "vpc-00a0e3c64adf1f8f6"//default vpc id
+  vpc_id      = aws_vpc.main.id//"vpc-00a0e3c64adf1f8f6"//default vpc id
 
   ingress {
   description      = "Allow MySQL from EC2"
