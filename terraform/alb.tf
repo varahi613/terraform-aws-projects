@@ -6,6 +6,6 @@ resource "aws_alb" "tf_web_alb" {
   subnets = [aws_subnet.tf_public_subnet]
   enable_deletion_protection = false
   tags = {
-    Name = "tf_web_alb"
+    Name = "tf web alb"
   }
 }
