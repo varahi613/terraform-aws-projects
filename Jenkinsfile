@@ -40,7 +40,7 @@ pipeline {
             steps {
                 dir('terraform') {
                     // Create an execution plan and save it to 'tfplan'
-                    sh 'terraform plan -out=tfplan'
+                    sh 'terraform plan -out=tfplan -lock=false'
                 }
             }
         }
