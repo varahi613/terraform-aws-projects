@@ -1,7 +1,7 @@
 resource "aws_instance" "tf_ec2_instance" {
    ami                    = "ami-07d2649d67dbe8900"
   instance_type          = var.instance_type
-  key_name               = "terraform-ec2"
+  key_name               = "masani"
   associate_public_ip_address = true
   vpc_security_group_ids = [aws_security_group.tf_ec2_sg.id]  # Use tf_ec2_sg security group
   subnet_id              = aws_subnet.tf_public_subnet_1.id    # EC2 instance in public subnet
