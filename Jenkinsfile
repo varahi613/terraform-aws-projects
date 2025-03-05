@@ -4,7 +4,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID = credentials('aws-credentials')  // Ensure 'aws-credentials' is defined in Jenkins
         AWS_SECRET_ACCESS_KEY = credentials('aws-credentials')
-        AWS_REGION = 'us-east-1'
+        AWS_REGION = 'us-west-1'
         PATH = "/opt/homebrew/bin:$PATH"  // Ensure Terraform is in the PATH if it's installed here
     }
 
