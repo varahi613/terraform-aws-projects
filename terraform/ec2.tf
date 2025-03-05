@@ -1,5 +1,5 @@
 resource "aws_instance" "tf_ec2_instance" {
-   ami                    = var.ami_id
+   ami                    = ami-07d2649d67dbe8900
   instance_type          = var.instance_type
   key_name               = "terraform-ec2"
   associate_public_ip_address = true
